@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2021.10.06.06
+// @version 2021.10.06.07
 // @include https://*.waze.com/editor*
 // @include https://*.waze.com/*/editor*
 // @grant	none
@@ -16,7 +16,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2021.10.06.06";
+var vmzde_version = "2021.10.06.07";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -69,7 +69,7 @@ function add_buttons()
     if (!W.loginManager.user) {
       return;
     }
-  }}
+  }
 
 var nrw_btn1 = $('<button style="width: 285px;height: 24px; font-size:85%;color: DarkSlateGrey;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW</button>');
 nrw_btn1.click(function(){
@@ -78,7 +78,7 @@ nrw_btn1.click(function(){
   window.open(mapsUrl,'_blank');
 });
 
-var nrw_btn2 = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW mit Übergabe</button>');
+var nrw_btn2 = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW mit Uebergabe</button>');
 nrw_btn2.click(function(){
   var href = $('.WazeControlPermalink a').attr('href');
 
