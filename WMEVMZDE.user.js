@@ -132,12 +132,12 @@ addon.id = "sidepanel-vmzde";
 addon.className = "tab-pane";
 tabContent.appendChild(addon);
 
-$("#sidepanel-l2degeo").append('<b><p style="font-family:verdana"; "font-size:16px">Verkehrsportale der Bundesländer</b></p>'); // ■■■■■ "Verkehrsportale der Bundesländer" ■■■■■
-$("#sidepanel-l2degeo").append(spacer);
-$("#sidepanel-l2degeo").append('<p style="font-size:75%">Portale mit grüner Schrift unterstützen die Übergabe der Koordinaten aus dem WME</p>');
-$("#sidepanel-l2degeo").append(spacer);
-$("#sidepanel-l2degeo").append(nrw_btn1); //Nordrhein-Westfalen - Verkehr.NRW ohne Link
-$("#sidepanel-l2degeo").append(nrw_btn2); //Nordrhein-Westfalen - Verkehr.NRW mit Link
-$("#sidepanel-l2degeo").append('<br><br>');
+$("#sidepanel-vmzde").append('<b><p style="font-family:verdana"; "font-size:16px">Verkehrsportale der Bundesländer</b></p>'); // ■■■■■ "Verkehrsportale der Bundesländer" ■■■■■
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append('<p style="font-size:75%">Portale mit grüner Schrift unterstützen die Übergabe der Koordinaten aus dem WME</p>');
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(nrw_btn1); //Nordrhein-Westfalen - Verkehr.NRW ohne Link
+$("#sidepanel-vmzde").append(nrw_btn2); //Nordrhein-Westfalen - Verkehr.NRW mit Link
+$("#sidepanel-vmzde").append('<br><br>');
 }
 add_buttons();
