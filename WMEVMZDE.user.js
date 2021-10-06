@@ -2,7 +2,7 @@
 // @name    WME-VMZDE
 // @description   This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace     https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version       2021.10.06.01
+// @version       2021.10.06.02
 // @updateURL     https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
 // @downloadURL   https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
 // @include       https://*.waze.com/editor*
@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2021.10.06.01";
+var vmzde_version = "2021.10.06.02";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -80,7 +80,7 @@ baw_btn.click(function(){
   window.open(mapsUrl,'_blank');
 });
 
-var nrw_btn2 = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">BayernAtlas</button>');
+var nrw_btn2 = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW mit Übergabe</button>');
 bay_btn.click(function(){
   var href = $('.WazeControlPermalink a').attr('href');
 
