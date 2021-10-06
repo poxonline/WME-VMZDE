@@ -62,15 +62,14 @@ function add_buttons()
     console.log('user-info element not yet available, page still loading');
     return;
   }
-  if (!W.loginManager.user) {
+   if (!W.loginManager.user) {
     W.loginManager.events.register('login', null, add_buttons);
     W.loginManager.events.register('loginStatus', null, add_buttons);
     // Double check as event might have triggered already
     if (!W.loginManager.user) {
       return;
     }
-  }
-
+  }}
 
 var nrw_btn1 = $('<button style="width: 285px;height: 24px; font-size:85%;color: DarkSlateGrey;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW</button>');
 nrw_btn1.click(function(){
