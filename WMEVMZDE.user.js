@@ -3,8 +3,6 @@
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
 // @version 2021.10.06.05
-// https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
-// https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
 // @include https://*.waze.com/*/editor*
 // @grant	none
