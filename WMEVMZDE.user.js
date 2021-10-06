@@ -1,14 +1,14 @@
 // ==UserScript==
-// @name    WME-VMZDE
-// @description   This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
-// @namespace     https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version       2021.10.06.03
-// @updateURL     https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
-// @downloadURL   https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
-// @include       https://*.waze.com/editor*
-// @include       https://*.waze.com/*/editor*
+// @name WME-VMZDE
+// @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
+// @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
+// @version 2021.10.06.03
+// @updateURL https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
+// @downloadURL https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
+// @include https://*.waze.com/editor*
+// @include https://*.waze.com/*/editor*
 // @grant	none
-// @author	      pox_online
+// @author	pox_online
 
 // ==/UserScript==
 
@@ -73,6 +73,7 @@ function add_buttons()
     }
   }
 
+
 var nrw_btn1 = $('<button style="width: 285px;height: 24px; font-size:85%;color: DarkSlateGrey;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW</button>');
 nrw_btn1.click(function(){
 
@@ -131,7 +132,7 @@ addon.id = "sidepanel-vmzde";
 addon.className = "tab-pane";
 tabContent.appendChild(addon);
 
-$("#sidepanel-l2degeo").append('<b><p style="font-family:verdana"; "font-size:16px">GEOPORTALE DER BUNDESLÄNDER</b></p>'); // ■■■■■ "Verkehrsportale der Bundesländer" ■■■■■
+$("#sidepanel-l2degeo").append('<b><p style="font-family:verdana"; "font-size:16px">Verkehrsportale der Bundesländer</b></p>'); // ■■■■■ "Verkehrsportale der Bundesländer" ■■■■■
 $("#sidepanel-l2degeo").append(spacer);
 $("#sidepanel-l2degeo").append('<p style="font-size:75%">Portale mit grüner Schrift unterstützen die Übergabe der Koordinaten aus dem WME</p>');
 $("#sidepanel-l2degeo").append(spacer);
