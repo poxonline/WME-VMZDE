@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2021.10.09.05
+// @version 2021.10.09.06
 // @include https://*.waze.com/editor*
 // @include https://*.waze.com/*/editor*
 // @grant	none
@@ -16,7 +16,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2021.10.09.05";
+var vmzde_version = "2021.10.09.06";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -90,8 +90,7 @@ nrw_btn2.click(function(){
   var mapsUrl = 'https://www.verkehr.nrw/web/vipnrw/karte/?center='+ lat +','+ lon + '&zoom=' + zoom +'&car=true&publicTransport=false&bike=false&layer=Verkehrslage,Parken,Webcams,Verkehrsmeldungen,Baustellen&highlightRoute=false' ;
        
   window.open(mapsUrl,'_blank');
-   }
-  }
+
 });
 
   var spacer = '<p style="margin-bottom:5px">'
