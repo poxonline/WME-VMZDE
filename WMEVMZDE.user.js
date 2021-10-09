@@ -107,6 +107,8 @@ nrw_btn2.click(function(){
   }
 });
 
+  var spacer = '<p style="margin-bottom:5px">'
+  
 // create the content of the side-panel tab
 var addon = document.createElement('section');
 addon.id = "vmzde-addon";
