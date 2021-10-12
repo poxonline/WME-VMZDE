@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2021.10.12.07
+// @version 2021.10.12.08
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2021.10.12.07";
+var vmzde_version = "2021.10.12.08";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -84,28 +84,16 @@ var bw_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: G
 bw_btn.click(function(){
   var href = $('.WazeControlPermalink a').attr('href');
 
-  var lon = parseFloat(getQueryString(href, 'lon'));
-  var lat = parseFloat(getQueryString(href, 'lat'));
-  var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
+    var lon = getQueryString(href, 'lon');
+    var lat = getQueryString(href, 'lat');
+    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
 
-  zoom = zoom-10;
-
-  // Using Proj4js to transform coordinates. See http://proj4js.org/
-  var script = document.createElement("script"); // dynamic load the library from https://cdnjs.com/libraries/proj4js
-  script.type = 'text/javascript';
-  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js';
-  document.getElementsByTagName('head')[0].appendChild(script); // Add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
-  script.onload = popAtlas; //wait till the script is downloaded & executed
-  function popAtlas() {
-  //just a wrapper for onload
-   if (proj4) {
-    firstProj= "+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
-    var utm = proj4(firstProj,[lon,lat]);
-  var mapsUrl = 'https://verkehrsinfo-bw.de/?zoom='+zoom+'&fullscreen=false&center='+ utm[0] +','+ utm[1] +'&layers=Beschriftung,Verkehrslage,Reisezeitverlust,Verkehrsmeldungen,Baustellen,Baustellenverl%C3%A4ufe,Baustellenumleitungen,Verkehrskameras,Wechselwegweisung,Betriebsmeldungen&suchtext=&openebenencontrol=false' ;
+    zoom = zoom > 19 ? 19 : zoom;
+    zoom = zoom - 10;
+  var mapsUrl = 'https://verkehrsinfo-bw.de/?zoom='+zoom+'&fullscreen=false&center='+ lat +','+ lon +'&layers=Beschriftung,Verkehrslage,Reisezeitverlust,Verkehrsmeldungen,Baustellen,Baustellenverl%C3%A4ufe,Baustellenumleitungen,Verkehrskameras,Wechselwegweisung,Betriebsmeldungen&suchtext=&openebenencontrol=false' ;
+       
   window.open(mapsUrl,'_blank');
-   }
-  }
-});  
+});
   
 var by_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Bayern Info</button>');
 by_btn.click(function(){
