@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2021.10.12.02
+// @version 2021.10.12.03
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2021.10.12.02";
+var vmzde_version = "2021.10.12.03";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -89,6 +89,7 @@ by_btn.click(function(){
     var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
 
     zoom = zoom > 19 ? 19 : zoom;
+    zoom = zoom - 3;
   var mapsUrl = 'https://www.bayerninfo.de/de/karte?geo=' + lat + ',' + lon + 'zoom=' + zoom ;
        
   window.open(mapsUrl,'_blank');
