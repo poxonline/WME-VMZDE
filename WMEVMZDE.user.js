@@ -2,7 +2,9 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2021.10.09.06
+// @version 2021.10.12.01
+// @updateURL https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
+// @downloadURL https://github.com/poxonline/WME-VMZDE/raw/master/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
 // @include https://*.waze.com/*/editor*
 // @grant	none
@@ -16,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2021.10.09.06";
+var vmzde_version = "2021.10.12.01";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -71,15 +73,30 @@ function add_buttons()
     }
   }
 
-var nrw_btn1 = $('<button style="width: 285px;height: 24px; font-size:85%;color: DarkSlateGrey;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW</button>');
+var dummy_noparamter_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: DarkSlateGrey;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Bayern Info</button>');
 nrw_btn1.click(function(){
 
   var mapsUrl = 'https://www.verkehr.nrw/#' ;
   window.open(mapsUrl,'_blank');
 });
+  
+var by_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Bayern Info</button>');
+by_btn.click(function(){
+    var href = $('.WazeControlPermalink a').attr('href');
 
-var nrw_btn2 = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW mit Uebergabe</button>');
-nrw_btn2.click(function(){
+    var lon = getQueryString(href, 'lon');
+    var lat = getQueryString(href, 'lat');
+    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
+
+    zoom = zoom > 19 ? 19 : zoom;
+  var mapsUrl = 'https://www.bayerninfo.de/de/karte?geo=' + lat + ',' + lon + 'zoom=' + zoom ;
+       
+  window.open(mapsUrl,'_blank');
+
+});
+
+var nrw_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr NRW mit Uebergabe</button>');
+nrw_btn.click(function(){
     var href = $('.WazeControlPermalink a').attr('href');
 
     var lon = getQueryString(href, 'lon');
@@ -121,8 +138,9 @@ $("#sidepanel-vmzde").append('<b><p style="font-family:verdana"; "font-size:16px
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append('<p style="font-size:75%">Portale mit grüner Schrift unterstützen die Übergabe der Koordinaten aus dem WME</p>');
 $("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append(nrw_btn1); //Nordrhein-Westfalen - Verkehr.NRW ohne Link
-$("#sidepanel-vmzde").append(nrw_btn2); //Nordrhein-Westfalen - Verkehr.NRW mit Link
+$("#sidepanel-vmzde").append(by_btn); // Bayerinfo - Mit Übergabe
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(nrw_btn); //Nordrhein-Westfalen - Verkehr.NRW mit Link
 $("#sidepanel-vmzde").append('<br><br>');
 }
 add_buttons();
