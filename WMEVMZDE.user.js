@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2021.10.12.05
+// @version 2021.10.12.06
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2021.10.12.05";
+var vmzde_version = "2021.10.12.06";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -96,7 +96,7 @@ by_btn.click(function(){
 
 });
 
-var nrw_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr.NRW </button>');
+var nrw_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr.NRW</button>');
 nrw_btn.click(function(){
     var href = $('.WazeControlPermalink a').attr('href');
 
@@ -106,6 +106,22 @@ nrw_btn.click(function(){
 
     zoom = zoom > 19 ? 19 : zoom;
   var mapsUrl = 'https://www.verkehr.nrw/web/vipnrw/karte/?center='+ lat +','+ lon + '&zoom=' + zoom +'&car=true&publicTransport=false&bike=false&layer=Verkehrslage,Parken,Webcams,Verkehrsmeldungen,Baustellen&highlightRoute=false' ;
+       
+  window.open(mapsUrl,'_blank');
+
+});
+  
+var rlp_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Mobilitätsatlas Rheinland-Pfalz</button>');
+rlp_btn.click(function(){
+    var href = $('.WazeControlPermalink a').attr('href');
+
+    var lon = getQueryString(href, 'lon');
+    var lat = getQueryString(href, 'lat');
+    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
+
+    zoom = zoom > 19 ? 19 : zoom;
+    zoom = zoom - 3;
+  var mapsUrl = 'https://verkehr.rlp.de/#/?center='+ lat +','+ lon + '&zoom=' + zoom ;
        
   window.open(mapsUrl,'_blank');
 
@@ -141,7 +157,9 @@ $("#sidepanel-vmzde").append('<p style="font-size:75%">Portale mit grüner Schri
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(by_btn); // Bayerinfo - Mit Übergabe
 $("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append(nrw_btn); //Nordrhein-Westfalen - Verkehr.NRW mit Link
+$("#sidepanel-vmzde").append(nrw_btn); //Nordrhein-Westfalen - Verkehr.NRW mit Übergabe
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(rlp_btn); //Rheinland-Pfalz - Mobilitätsatlas mit Übergabe
 $("#sidepanel-vmzde").append('<br><br>');
 }
 add_buttons();
