@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2021.10.12.08";
+var vmzde_version = "2023.03.26.01";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -125,6 +125,21 @@ nrw_btn.click(function(){
   window.open(mapsUrl,'_blank');
 
 });
+
+var agmbh_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr.Autobahn</button>');
+agmbh_btn.click(function(){
+    var href = $('.WazeControlPermalink a').attr('href');
+
+    var lon = getQueryString(href, 'lon');
+    var lat = getQueryString(href, 'lat');
+    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
+
+    zoom = zoom > 19 ? 19 : zoom;
+  var mapsUrl = 'https://verkehr.autobahn.de/web/vipnrw/karte/?center='+ lat +','+ lon + '&zoom=' + zoom +'&car=true&publicTransport=false&bike=false&layer=Verkehrslage,Parken,Webcams,Verkehrsmeldungen,Baustellen&highlightRoute=false' ;
+
+  window.open(mapsUrl,'_blank');
+
+});  
   
 var rlp_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Mobilitätsatlas Rheinland-Pfalz</button>');
 rlp_btn.click(function(){
@@ -177,6 +192,8 @@ $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(nrw_btn); //Nordrhein-Westfalen - Verkehr.NRW mit Übergabe
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(rlp_btn); //Rheinland-Pfalz - Mobilitätsatlas mit Übergabe
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(agmbh_btn); //Verkehr-Autobahn Button
 $("#sidepanel-vmzde").append('<br><br>');
 }
 add_buttons();
