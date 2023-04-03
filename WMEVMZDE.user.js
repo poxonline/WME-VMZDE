@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2023.04.04.04
+// @version 2023.04.04.05
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2023.04.04.04";
+var vmzde_version = "2023.04.04.05";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -203,19 +203,18 @@ $("#sidepanel-vmzde").append(bw_btn); // Verkehrsinfo BW - Mit Übergabe
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(by_btn); // Bayerinfo - Mit Übergabe
 $("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append(nrw_btn); //Nordrhein-Westfalen - Verkehr.NRW mit Übergabe
+$("#sidepanel-vmzde").append(nrw_btn); // Nordrhein-Westfalen - Verkehr.NRW mit Übergabe
 $("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append(rlp_btn); //Rheinland-Pfalz - Mobilitätsatlas mit Übergabe
+$("#sidepanel-vmzde").append(rlp_btn); // Rheinland-Pfalz - Mobilitätsatlas mit Übergabe
 $("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append(agmbh_btn); //Verkehr-Autobahn Button
-$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(agmbh_btn); // Verkehr-Autobahn Button
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append('<center>=====================</center>');
 $("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(nds_btn); // VMZ Niedersachsen - Ohne Übergabe
 $("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append(nds_btn); //VMZ Niedersachsen - Ohne Übergabe
-$("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append(bln_btn); //VIZ Berlin (aktuelle Verkehrslage) - Ohne Übergabe
+$("#sidepanel-vmzde").append(bln_btn); // VIZ Berlin (aktuelle Verkehrslage) - Ohne Übergabe
+$("#sidepanel-vmzde").append('<center>Known Error: VIZ Berlin only opens by clicking VMZ Niedersachsen</center>');
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append('<br><br>');
 }
