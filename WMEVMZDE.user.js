@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2023.03.26.01
+// @version 2023.04.04.01
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2023.03.26.01";
+var vmzde_version = "2023.04.04.01";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -156,6 +156,13 @@ rlp_btn.click(function(){
   window.open(mapsUrl,'_blank');
 
 });
+  
+var nds_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: DarkSlateGrey;border-radius: 5px;border: 0.5px solid lightgrey; background: white">VMZ Niedersachsen</button>');
+nds_btn.click(function(){
+
+  var mapsUrl = 'https://www.vmz-niedersachsen.de/niedersachsen/' ;
+  window.open(mapsUrl,'_blank');
+});
 
   var spacer = '<p style="margin-bottom:5px">'
   
@@ -183,7 +190,7 @@ tabContent.appendChild(addon);
 
 $("#sidepanel-vmzde").append('<b><p style="font-family:verdana"; "font-size:16px">Verkehrsportale der Bundesländer</b></p>'); // ■■■■■ "Verkehrsportale der Bundesländer" ■■■■■
 $("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append('<p style="font-size:75%">Portale mit grüner Schrift unterstützen die Übergabe der Koordinaten aus dem WME</p>');
+$("#sidepanel-vmzde").append('<p style="font-size:80%">Portale mit grüner Schrift unterstützen die Übergabe der Koordinaten aus dem WME</p>');
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(bw_btn); // Verkehrsinfo BW - Mit Übergabe
 $("#sidepanel-vmzde").append(spacer);
@@ -194,6 +201,13 @@ $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(rlp_btn); //Rheinland-Pfalz - Mobilitätsatlas mit Übergabe
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(agmbh_btn); //Verkehr-Autobahn Button
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(=====================);
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append(nds_btn); //VMZ Niedersachsen - Ohne Übergabe
+$("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append('<br><br>');
 }
 add_buttons();
