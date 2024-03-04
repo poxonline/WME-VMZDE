@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2023.06.30.01";
+var vmzde_version = "2024.03.04.01";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -135,7 +135,7 @@ agmbh_btn.click(function(){
     var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
 
     zoom = zoom > 19 ? 19 : zoom;
-  var mapsUrl = 'https://verkehr.autobahn.de/web/vipnrw/karte/?center='+ lat +','+ lon + '&zoom=' + zoom +'&car=true&publicTransport=false&bike=false&layer=Verkehrslage,Parken,Webcams,Verkehrsmeldungen,Baustellen&highlightRoute=false' ;
+  var mapsUrl = 'https://verkehr.vz-deutschland.de/?center='+ lat +','+ lon + '&zoom=' + zoom +'&car=true&publicTransport=false&bike=false&layer=Verkehrslage,Parken,Webcams,Verkehrsmeldungen,Baustellen&highlightRoute=false' ;
 
   window.open(mapsUrl,'_blank');
 
