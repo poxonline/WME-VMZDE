@@ -42,7 +42,13 @@ double[] GoogleBingtoWGS84Mercator (double x, double y) {
   return new double[] {lon, lat};
 }
 */
-
+function getCenterZoom() {
+    var map = W.map.getOLMap();
+    var zoom = map.getZoom();
+    var center = map.getCenter().transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
+    center.zoom = zoom;
+    return center;
+}
 function getQueryString (link, name)
 {
   var pos = link.indexOf(name + '=' ) + name.length + 1;
@@ -97,22 +103,15 @@ bw_btn.click(function(){
   
 var by_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Bayern Info</button>');
 by_btn.click(function(){
-    var href = $('.WazeControlPermalink a').attr('href');
+    var cz = getCenterZoom();
+    var nord = cz.lat+0.01;
+    var sued = cz.lat-0.01;
+    var west = cz.lon-0.01;
+    var ost = cz.lon+0.01;
 
-    var lon = getQueryString(href, 'lon');
-    var lat = getQueryString(href, 'lat');
-    var west = lon-0.01;
-    var ost = lon+0.001;
-    var nord = lat-0.01;
-    var sued = lat+0.001;
-    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
-
-    zoom = zoom > 19 ? 19 : zoom;
-    zoom = zoom - 3;
   var mapsUrl = 'https://www.bayerninfo.de/de/karte?bounds=' + nord + '%2C' + west + '%2C' + sued + '%2C' + ost + '&traffic=all';
        
   window.open(mapsUrl,'_blank');
-
 });
 
 var nrw_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr.NRW</button>');
