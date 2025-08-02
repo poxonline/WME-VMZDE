@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2025.08.02.05
+// @version 2025.08.02.06
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2025.08.02.05";
+var vmzde_version = "2025.08.02.06";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -88,15 +88,11 @@ dummy_noparamter_btn.click(function(){
 
 var bw_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehrsinfo BW</button>');
 bw_btn.click(function(){
-  var href = $('.WazeControlPermalink a').attr('href');
+  var cz = getCenterZoom();
 
-    var lon = getQueryString(href, 'lon');
-    var lat = getQueryString(href, 'lat');
-    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
-
-    zoom = zoom > 19 ? 19 : zoom;
+    var zoom = cz.zoom > 19 ? 19 : cz.zoom;
     zoom = zoom - 10;
-  var mapsUrl = 'https://verkehrsinfo-bw.de/?zoom='+zoom+'&fullscreen=false&center='+ lat +','+ lon +'&layers=Beschriftung,Verkehrslage,Reisezeitverlust,Verkehrsmeldungen,Baustellen,Baustellenverl%C3%A4ufe,Baustellenumleitungen,Verkehrskameras,Wechselwegweisung,Betriebsmeldungen&suchtext=&openebenencontrol=false' ;
+  var mapsUrl = 'https://verkehrsinfo-bw.de/?zoom='+zoom+'&fullscreen=false&center='+ cz.lat +','+ cz.lon +'&layers=Beschriftung,Verkehrslage,Reisezeitverlust,Verkehrsmeldungen,Baustellen,Baustellenverl%C3%A4ufe,Baustellenumleitungen,Verkehrskameras,Wechselwegweisung,Betriebsmeldungen&suchtext=&openebenencontrol=false' ;
        
   window.open(mapsUrl,'_blank');
 });
@@ -116,14 +112,10 @@ by_btn.click(function(){
 
 var nrw_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr.NRW</button>');
 nrw_btn.click(function(){
-    var href = $('.WazeControlPermalink a').attr('href');
+  var cz = getCenterZoom();
 
-    var lon = getQueryString(href, 'lon');
-    var lat = getQueryString(href, 'lat');
-    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
-
-    zoom = zoom > 19 ? 19 : zoom;
-  var mapsUrl = 'https://www.verkehr.nrw/web/vipnrw/karte/?center='+ lat +','+ lon + '&zoom=' + zoom +'&car=true&publicTransport=false&bike=false&layer=Verkehrslage,Parken,Webcams,Verkehrsmeldungen,Baustellen&highlightRoute=false' ;
+  var zoom = cz.zoom > 19 ? 19 : cz.zoom;
+  var mapsUrl = 'https://www.verkehr.nrw/web/vipnrw/karte/?center='+ cz.lat +','+ cz.lon + '&zoom=' + zoom +'&car=true&publicTransport=false&bike=false&layer=Verkehrslage,Parken,Webcams,Verkehrsmeldungen,Baustellen&highlightRoute=false' ;
        
   window.open(mapsUrl,'_blank');
 
@@ -131,14 +123,10 @@ nrw_btn.click(function(){
 
 var agmbh_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Verkehr.Autobahn</button>');
 agmbh_btn.click(function(){
-    var href = $('.WazeControlPermalink a').attr('href');
+var cz = getCenterZoom();
 
-    var lon = getQueryString(href, 'lon');
-    var lat = getQueryString(href, 'lat');
-    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
-
-    zoom = zoom > 19 ? 19 : zoom;
-  var mapsUrl = 'https://verkehr.vz-deutschland.de/?lat='+ lat +'&lon='+ lon + '&zoom=' + zoom +'&layer=raststellen,baustellen,stau,verkehrsmeldungen' ;
+  var zoom = cz.zoom > 19 ? 19 : cz.zoom;
+  var mapsUrl = 'https://verkehr.vz-deutschland.de/?lat='+ cz.lat +'&lon='+ cz.lon + '&zoom=' + zoom +'&layer=raststellen,baustellen,stau,verkehrsmeldungen' ;
 
   window.open(mapsUrl,'_blank');
 
@@ -146,15 +134,11 @@ agmbh_btn.click(function(){
   
 var rlp_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Mobilitätsatlas Rheinland-Pfalz</button>');
 rlp_btn.click(function(){
-    var href = $('.WazeControlPermalink a').attr('href');
+var cz = getCenterZoom();
 
-    var lon = getQueryString(href, 'lon');
-    var lat = getQueryString(href, 'lat');
-    var zoom = parseInt(getQueryString(href, 'zoom')) + CorrectZoom(href);
-
-    zoom = zoom > 19 ? 19 : zoom;
+    var zoom = cz.zoom > 19 ? 19 : cz.zoom;
     zoom = zoom - 3;
-  var mapsUrl = 'https://verkehr.rlp.de/#/?center='+ lat +','+ lon + '&zoom=' + zoom ;
+  var mapsUrl = 'https://verkehr.rlp.de/#/?center='+ cz.lat +','+ cz.lon + '&zoom=' + zoom ;
        
   window.open(mapsUrl,'_blank');
 
@@ -163,10 +147,7 @@ rlp_btn.click(function(){
 var sh_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: Green;border-radius: 5px;border: 0.5px solid lightgrey; background: white">Mobilitätsatlas Schleswig-Holstein</button>');
     sh_btn.click(function(){
 
-        var href = $('.WazeControlPermalink a').attr('href');
-
-        var lon = parseFloat(getQueryString(href, 'lon'));
-        var lat = parseFloat(getQueryString(href, 'lat'));
+    var cz = getCenterZoom();
 
         // Using Proj4js to transform coordinates. See http://proj4js.org/
         var script = document.createElement("script"); // dynamic load the library from https://cdnjs.com/libraries/proj4js
@@ -179,7 +160,7 @@ var sh_btn = $('<button style="width: 285px;height: 24px; font-size:85%;color: G
             //just a wrapper for onload
             if (proj4) {
                 firstProj= "+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
-                var utm = proj4(firstProj,[lon,lat]);
+                var utm = proj4(firstProj,[cz.lon,cz.lat]);
 
 
                 var mapsUrl = 'https://danord.gdi-sh.de/viewer/resources/apps/lbvsh_baustelleninfos/index.html?lang=de&vm=2D&s=2000&c='+utm[0]+'%2C'+utm[1]+'#/';
@@ -225,6 +206,7 @@ tabContent.appendChild(addon);
 
 $("#sidepanel-vmzde").append('<b><p style="font-family:verdana"; "font-size:16px">Verkehrsportale der Bundesländer</b></p>'); // ■■■■■ "Verkehrsportale der Bundesländer" ■■■■■
 $("#sidepanel-vmzde").append(spacer);
+$("#sidepanel-vmzde").append('<p style="font-size:90%">Koordinaten Erfassung auf WME SDK umgestellt bei Problemen bitte Feedback an pox_online</p>');
 $("#sidepanel-vmzde").append('<p style="font-size:80%">Portale mit grüner Schrift unterstützen die Übergabe der Koordinaten aus dem WME</p>');
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(bw_btn); // Verkehrsinfo BW - Mit Übergabe
