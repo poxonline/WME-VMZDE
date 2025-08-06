@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name WME-VMZDE-sdk
+// @name WME-VMZDE
 // @description This script create buttons to open several Traffic Management Platforms in Germany, using the WME parameters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2025.08.06.05
+// @version 2025.08.06.06
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -15,7 +15,7 @@
 /* eslint-env jquery */
 /*global W*/
 
-const VMZDE_VERSION = "2025.08.06.05";
+const VMZDE_VERSION = "2025.08.06.06";
 
 // Konfiguration für Retry-Mechanismen
 const CONFIG = {
