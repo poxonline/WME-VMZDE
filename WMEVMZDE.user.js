@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name WME-VMZDE
+// @name WME-VMZDE-sdk
 // @description This script create buttons to open several Traffic Management Platforms in Germany, using the WME parameters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2025.08.06.04
+// @version 2025.08.06.05
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -10,12 +10,138 @@
 // @grant none
 // @author pox_online
 // ==/UserScript==
-// Hinweis: Skript basiert auf Code von https://github.com/iridium1-waze/WME-L2DEGEO
-const VMZDE_VERSION = "2025.08.06.04";
+
+
+/* eslint-env jquery */
+/*global W*/
+
+const VMZDE_VERSION = "2025.08.06.05";
+
+// Konfiguration für Retry-Mechanismen
+const CONFIG = {
+    maxRetries: 20,
+    retryDelay: 1000,
+    elementCheckDelay: 500,
+    maxWaitTime: 30000
+};
+
+/**
+ * Erweiterte Wartefunktion mit mehreren Selektoren und Timeout
+ */
+function waitForElement(selectors, timeout = CONFIG.maxWaitTime) {
+    return new Promise((resolve, reject) => {
+        const startTime = Date.now();
+
+        const checkElement = () => {
+            // Prüfe alle möglichen Selektoren
+            for (const selector of selectors) {
+                const element = document.querySelector(selector);
+                if (element) {
+                    console.log(`VMZDE: Element gefunden mit Selektor: ${selector}`);
+                    resolve(element);
+                    return;
+                }
+            }
+
+            // Timeout-Prüfung
+            if (Date.now() - startTime > timeout) {
+                reject(new Error(`Timeout: Keines der Elemente gefunden: ${selectors.join(', ')}`));
+                return;
+            }
+
+            // Erneut prüfen
+            setTimeout(checkElement, CONFIG.elementCheckDelay);
+        };
+
+        checkElement();
+    });
+}
+
+/**
+ * Robuste Wartefunktion für Waze-Objekte mit detailliertem Logging
+ */
+function waitForWaze() {
+    return new Promise((resolve, reject) => {
+        let attempts = 0;
+        const startTime = Date.now();
+
+        const checkWaze = () => {
+            attempts++;
+            console.log(`VMZDE: Waze-Check Versuch ${attempts}/${CONFIG.maxRetries}`);
+
+            // Detaillierte Prüfung der Waze-Objekte
+            const checks = {
+                'window.W': !!window.W,
+                'W.loginManager': !!(window.W && W.loginManager),
+                'W.map': !!(window.W && W.map),
+                'W.model': !!(window.W && W.model)
+            };
+
+            console.log('VMZDE: Waze-Objekt Status:', checks);
+
+            if (checks['window.W'] && checks['W.loginManager'] && checks['W.map']) {
+                console.log('VMZDE: Alle erforderlichen Waze-Objekte verfügbar');
+                resolve();
+                return;
+            }
+
+            if (attempts >= CONFIG.maxRetries || Date.now() - startTime > CONFIG.maxWaitTime) {
+                reject(new Error(`Waze-Objekte nach ${attempts} Versuchen nicht verfügbar`));
+                return;
+            }
+
+            setTimeout(checkWaze, CONFIG.retryDelay);
+        };
+
+        checkWaze();
+    });
+}
+
+/**
+ * Erweiterte Login-Wartefunktion
+ */
+function waitForLogin() {
+    return new Promise((resolve, reject) => {
+        const startTime = Date.now();
+
+        const checkLogin = () => {
+            console.log('VMZDE: Login-Status prüfen...');
+
+            if (W.loginManager && W.loginManager.user) {
+                console.log('VMZDE: Benutzer ist angemeldet');
+                resolve();
+                return;
+            }
+
+            if (Date.now() - startTime > CONFIG.maxWaitTime) {
+                reject(new Error('Login-Timeout erreicht'));
+                return;
+            }
+
+            // Event-Listener für Login-Events
+            if (W.loginManager && W.loginManager.events) {
+                const loginHandler = () => {
+                    if (W.loginManager.user) {
+                        console.log('VMZDE: Login-Event empfangen');
+                        W.loginManager.events.unregister('login', null, loginHandler);
+                        W.loginManager.events.unregister('loginStatus', null, loginHandler);
+                        resolve();
+                    }
+                };
+
+                W.loginManager.events.register('login', null, loginHandler);
+                W.loginManager.events.register('loginStatus', null, loginHandler);
+            }
+
+            setTimeout(checkLogin, CONFIG.retryDelay);
+        };
+
+        checkLogin();
+    });
+}
 
 /**
  * Moderne SDK-konforme Implementierung zur Ermittlung von Kartenzentrum und Zoom-Level
- * Verwendet die aktuelle Waze SDK API mit Fallback-Mechanismen
  */
 function getCenterZoom() {
     try {
@@ -80,7 +206,6 @@ function getCenterZoom() {
  * Asynchrone Proj4-Bibliothek laden mit Caching
  */
 async function loadProj4() {
-    // Prüfen ob bereits geladen
     if (window.proj4) {
         return window.proj4;
     }
@@ -214,62 +339,54 @@ function createPortalHandler(portalConfig) {
 }
 
 /**
- * Wartet auf die Verfügbarkeit der Waze-Objekte
+ * Robuste Tab-Erstellung mit mehreren Fallback-Strategien
  */
-function waitForWaze() {
-    return new Promise((resolve) => {
-        const checkWaze = () => {
-            if (window.W &&
-                W.loginManager &&
-                W.map &&
-                document.getElementById('user-info')) {
-                resolve();
-            } else {
-                setTimeout(checkWaze, 500);
-            }
-        };
-        checkWaze();
-    });
-}
-
-/**
- * Wartet auf Benutzeranmeldung
- */
-function waitForLogin() {
-    return new Promise((resolve) => {
-        if (W.loginManager.user) {
-            resolve();
-            return;
-        }
-
-        const loginHandler = () => {
-            if (W.loginManager.user) {
-                W.loginManager.events.unregister('login', null, loginHandler);
-                W.loginManager.events.unregister('loginStatus', null, loginHandler);
-                resolve();
-            }
-        };
-
-        W.loginManager.events.register('login', null, loginHandler);
-        W.loginManager.events.register('loginStatus', null, loginHandler);
-    });
-}
-
-/**
- * Erstellt den VMZ-Tab in der Seitenleiste
- */
-function createVMZTab() {
+async function createVMZTab() {
     try {
-        const userTabs = document.getElementById('user-info');
-        if (!userTabs) {
-            throw new Error('user-info Element nicht gefunden');
+        console.log('VMZDE: Suche nach Tab-Container...');
+
+        // Verschiedene mögliche Selektoren für den Tab-Container
+        const userInfoSelectors = [
+            '#user-info',
+            '.user-info',
+            '[id*="user-info"]',
+            '.nav-tabs',
+            '#sidebar .nav-tabs',
+            '.sidebar .nav-tabs'
+        ];
+
+        // Warte auf user-info Element
+        const userTabs = await waitForElement(userInfoSelectors);
+        console.log('VMZDE: user-info Element gefunden');
+
+        // Suche nach nav-tabs Container
+        let navTabs = userTabs.querySelector('.nav-tabs');
+        if (!navTabs) {
+            // Alternative Selektoren für nav-tabs
+            navTabs = document.querySelector('.nav-tabs') ||
+                     userTabs.querySelector('ul[role="tablist"]') ||
+                     userTabs.querySelector('.nav');
         }
 
-        const navTabs = userTabs.querySelector('.nav-tabs');
-        const tabContent = userTabs.querySelector('.tab-content');
+        // Suche nach tab-content Container
+        let tabContent = userTabs.querySelector('.tab-content');
+        if (!tabContent) {
+            // Alternative Selektoren für tab-content
+            tabContent = document.querySelector('.tab-content') ||
+                        userTabs.querySelector('[role="tabpanel"]') ||
+                        userTabs.querySelector('.content');
+        }
 
         if (!navTabs || !tabContent) {
-            throw new Error('Tab-Container nicht gefunden');
+            throw new Error(`Tab-Container nicht vollständig gefunden. navTabs: ${!!navTabs}, tabContent: ${!!tabContent}`);
+        }
+
+        console.log('VMZDE: Tab-Container gefunden, erstelle VMZ-Tab...');
+
+        // Prüfe ob Tab bereits existiert
+        if (document.getElementById('sidepanel-vmzde')) {
+            console.log('VMZDE: Tab bereits vorhanden, überspringe Erstellung');
+            return;
         }
 
         // Tab-Navigation erstellen
@@ -285,92 +402,153 @@ function createVMZTab() {
 
         console.log('VMZDE: Tab erfolgreich erstellt');
 
+        // Kurz warten damit der Tab im DOM verfügbar ist
+        await new Promise(resolve => setTimeout(resolve, 100));
+
     } catch (error) {
         console.error('VMZDE: Fehler beim Erstellen des Tabs:', error);
+        throw error;
     }
 }
 
 /**
- * Hauptfunktion zum Hinzufügen der Buttons
+ * Hauptfunktion zum Hinzufügen der Buttons mit Retry-Mechanismus
  */
 async function addButtons() {
-    try {
-        // Warten auf Waze und Benutzeranmeldung
-        await waitForWaze();
-        await waitForLogin();
+    let retryCount = 0;
 
-        console.log('VMZDE: Initialisierung gestartet');
+    while (retryCount < CONFIG.maxRetries) {
+        try {
+            console.log(`VMZDE: Initialisierung Versuch ${retryCount + 1}/${CONFIG.maxRetries}`);
 
-        // Tab erstellen
-        createVMZTab();
+            // Schritt 1: Warten auf Waze-Objekte
+            console.log('VMZDE: Warte auf Waze-Objekte...');
+            await waitForWaze();
 
-        // Container für Buttons
-        const container = $('#sidepanel-vmzde');
-        if (!container.length) {
-            throw new Error('VMZ-Container nicht gefunden');
+            // Schritt 2: Warten auf Benutzeranmeldung
+            console.log('VMZDE: Warte auf Benutzeranmeldung...');
+            await waitForLogin();
+
+            // Schritt 3: Tab erstellen
+            console.log('VMZDE: Erstelle VMZ-Tab...');
+            await createVMZTab();
+
+            // Schritt 4: Container finden und Buttons hinzufügen
+            console.log('VMZDE: Suche VMZ-Container...');
+            const container = $('#sidepanel-vmzde');
+
+            if (!container.length) {
+                throw new Error('VMZ-Container nicht gefunden nach Tab-Erstellung');
+            }
+
+            console.log('VMZDE: VMZ-Container gefunden, füge Buttons hinzu...');
+
+            // Container leeren falls bereits Inhalt vorhanden
+            container.empty();
+
+            // Header hinzufügen
+            container.html(`
+                <div style="padding: 10px;">
+                    <h3 style="margin: 0 0 10px 0; color: #333;">Verkehrsportale Deutschland</h3>
+                    <p style="font-size: 12px; color: #666; margin: 0 0 15px 0;">
+                        Koordinaten werden automatisch aus dem WME übertragen.<br>
+                        Version: ${VMZDE_VERSION} | Feedback an pox_online
+                    </p>
+                    <div style="border-bottom: 1px solid #ddd; margin-bottom: 15px;"></div>
+                </div>
+            `);
+
+            // Aktive Portale (mit Koordinatenübergabe)
+            const activeContainer = $('<div style="padding: 0 10px;"></div>');
+            activeContainer.append('<h4 style="color: #2e7d32; margin: 0 0 10px 0; font-size: 14px;">🟢 Mit Koordinatenübergabe</h4>');
+
+            Object.entries(PORTALS).forEach(([key, config]) => {
+                if (config.active) {
+                    const button = createButton(config.name, true);
+                    button.click(createPortalHandler(config));
+                    activeContainer.append(button);
+                }
+            });
+
+            container.append(activeContainer);
+
+            // Trennlinie
+            container.append('<div style="border-bottom: 1px solid #ddd; margin: 20px 10px;"></div>');
+
+            // Inaktive Portale (ohne Koordinatenübergabe)
+            const inactiveContainer = $('<div style="padding: 0 10px 20px 10px;"></div>');
+            inactiveContainer.append('<h4 style="color: #666; margin: 0 0 10px 0; font-size: 14px;">⚪ Ohne Koordinatenübergabe</h4>');
+
+            Object.entries(PORTALS).forEach(([key, config]) => {
+                if (!config.active) {
+                    const button = createButton(config.name, false);
+                    button.click(createPortalHandler(config));
+                    inactiveContainer.append(button);
+                }
+            });
+
+            container.append(inactiveContainer);
+
+            console.log('VMZDE: Initialisierung erfolgreich abgeschlossen!');
+            return; // Erfolg - Schleife verlassen
+
+        } catch (error) {
+            retryCount++;
+            console.error(`VMZDE: Fehler bei Versuch ${retryCount}:`, error);
+
+            if (retryCount >= CONFIG.maxRetries) {
+                console.error('VMZDE: Maximale Anzahl von Versuchen erreicht');
+                showErrorMessage();
+                return;
+            }
+
+            console.log(`VMZDE: Warte ${CONFIG.retryDelay}ms vor nächstem Versuch...`);
+            await new Promise(resolve => setTimeout(resolve, CONFIG.retryDelay));
         }
-
-        // Header hinzufügen
-        container.html(`
-            <div style="padding: 10px;">
-                <h3 style="margin: 0 0 10px 0; color: #333;">Verkehrsportale Deutschland</h3>
-                <p style="font-size: 12px; color: #666; margin: 0 0 15px 0;">
-                    Koordinaten werden automatisch aus dem WME übertragen.<br>
-                    Version: ${VMZDE_VERSION} | Feedback an pox_online
-                </p>
-                <div style="border-bottom: 1px solid #ddd; margin-bottom: 15px;"></div>
-            </div>
-        `);
-
-        // Aktive Portale (mit Koordinatenübergabe)
-        const activeContainer = $('<div style="padding: 0 10px;"></div>');
-        activeContainer.append('<h4 style="color: #2e7d32; margin: 0 0 10px 0; font-size: 14px;">🟢 Mit Koordinatenübergabe</h4>');
-
-        Object.entries(PORTALS).forEach(([key, config]) => {
-            if (config.active) {
-                const button = createButton(config.name, true);
-                button.click(createPortalHandler(config));
-                activeContainer.append(button);
-            }
-        });
-
-        container.append(activeContainer);
-
-        // Trennlinie
-        container.append('<div style="border-bottom: 1px solid #ddd; margin: 20px 10px;"></div>');
-
-        // Inaktive Portale (ohne Koordinatenübergabe)
-        const inactiveContainer = $('<div style="padding: 0 10px 20px 10px;"></div>');
-        inactiveContainer.append('<h4 style="color: #666; margin: 0 0 10px 0; font-size: 14px;">⚪ Ohne Koordinatenübergabe</h4>');
-
-        Object.entries(PORTALS).forEach(([key, config]) => {
-            if (!config.active) {
-                const button = createButton(config.name, false);
-                button.click(createPortalHandler(config));
-                inactiveContainer.append(button);
-            }
-        });
-
-        container.append(inactiveContainer);
-
-        console.log('VMZDE: Buttons erfolgreich hinzugefügt');
-
-    } catch (error) {
-        console.error('VMZDE: Fehler bei der Initialisierung:', error);
-
-        // Fallback: Einfache Fehlermeldung anzeigen
-        setTimeout(() => {
-            if ($('#sidepanel-vmzde').length) {
-                $('#sidepanel-vmzde').html(`
-                    <div style="padding: 10px; color: red;">
-                        <h3>VMZDE Fehler</h3>
-                        <p>Das Script konnte nicht vollständig geladen werden.</p>
-                        <p>Bitte Seite neu laden oder Entwickler kontaktieren.</p>
-                    </div>
-                `);
-            }
-        }, 2000);
     }
+}
+
+/**
+ * Zeigt eine Fehlermeldung an wenn das Script nicht geladen werden kann
+ */
+function showErrorMessage() {
+    // Versuche eine einfache Fehlermeldung zu erstellen
+    setTimeout(() => {
+        try {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #ffebee;
+                border: 1px solid #f44336;
+                color: #c62828;
+                padding: 15px;
+                border-radius: 5px;
+                z-index: 10000;
+                max-width: 300px;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+            `;
+            errorDiv.innerHTML = `
+                <strong>VMZDE Script Fehler</strong><br>
+                Das Script konnte nicht geladen werden.<br>
+                <small>Bitte Seite neu laden oder Entwickler kontaktieren.</small>
+                <button onclick="this.parentElement.remove()" style="float: right; margin-top: 5px;">×</button>
+            `;
+            document.body.appendChild(errorDiv);
+
+            // Automatisch nach 10 Sekunden entfernen
+            setTimeout(() => {
+                if (errorDiv.parentElement) {
+                    errorDiv.remove();
+                }
+            }, 10000);
+
+        } catch (e) {
+            console.error('VMZDE: Konnte keine Fehlermeldung anzeigen:', e);
+        }
+    }, 1000);
 }
 
 // Script-Initialisierung mit verbesserter Fehlerbehandlung
@@ -379,14 +557,35 @@ async function addButtons() {
 
     console.log(`VMZDE Script v${VMZDE_VERSION} wird geladen...`);
 
-    // Warten auf DOM-Bereitschaft
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', addButtons);
-    } else {
-        addButtons();
-    }
+    // Mehrere Initialisierungsstrategien
+    const initStrategies = [
+        // Strategie 1: Sofort wenn DOM bereit
+        () => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', addButtons);
+            } else {
+                addButtons();
+            }
+        },
 
-    // Zusätzlicher Fallback für langsame Verbindungen
-    setTimeout(addButtons, 3000);
+        // Strategie 2: Nach kurzer Verzögerung
+        () => setTimeout(addButtons, 2000),
+
+        // Strategie 3: Nach längerer Verzögerung (für langsame Verbindungen)
+        () => setTimeout(addButtons, 5000),
+
+        // Strategie 4: Window load event
+        () => window.addEventListener('load', addButtons)
+    ];
+
+    // Alle Strategien ausführen
+    initStrategies.forEach((strategy, index) => {
+        try {
+            console.log(`VMZDE: Initialisierungsstrategie ${index + 1} gestartet`);
+            strategy();
+        } catch (error) {
+            console.error(`VMZDE: Fehler bei Initialisierungsstrategie ${index + 1}:`, error);
+        }
+    });
 
 })();
