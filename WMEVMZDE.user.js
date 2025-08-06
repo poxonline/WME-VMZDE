@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name WME-VMZDE-sdk
+// @name WME-VMZDE
 // @description This script create buttons to open several Traffic Management Platforms in Germany, using the WME parameters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
 // @version 2025.08.06.03
