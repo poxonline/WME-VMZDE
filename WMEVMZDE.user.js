@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Management Platforms in Germany, using the WME parameters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2025.08.06.03
+// @version 2025.08.06.04
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -10,8 +10,8 @@
 // @grant none
 // @author pox_online
 // ==/UserScript==
-
-const VMZDE_VERSION = "2025.08.06.03";
+// Hinweis: Skript basiert auf Code von https://github.com/iridium1-waze/WME-L2DEGEO
+const VMZDE_VERSION = "2025.08.06.04";
 
 /**
  * Moderne SDK-konforme Implementierung zur Ermittlung von Kartenzentrum und Zoom-Level
@@ -317,7 +317,6 @@ async function addButtons() {
                 <p style="font-size: 12px; color: #666; margin: 0 0 15px 0;">
                     Koordinaten werden automatisch aus dem WME übertragen.<br>
                     Version: ${VMZDE_VERSION} | Feedback an pox_online
-                    Umgestellt auf WME SDK, danke an hahn112
                 </p>
                 <div style="border-bottom: 1px solid #ddd; margin-bottom: 15px;"></div>
             </div>
