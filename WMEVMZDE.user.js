@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name WME-VMZDE
+// @name WME-VMZDE-sdk
 // @description This script create buttons to open several Traffic Managemant Plattforms in Germany, using the WME paramenters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
 // @version 2025.08.02.06
@@ -18,7 +18,7 @@
 // 1) install this script as GitHub script
 // 2) Click on any of the links includes to open, PL Data will be handed over where supported.
 
-var vmzde_version = "2025.08.02.06";
+var vmzde_version = "2025.08.06.01";
 
 /* eslint-env jquery */ //we are working with jQuery
 //indicate used variables to be assigned
@@ -206,7 +206,7 @@ tabContent.appendChild(addon);
 
 $("#sidepanel-vmzde").append('<b><p style="font-family:verdana"; "font-size:16px">Verkehrsportale der Bundesländer</b></p>'); // ■■■■■ "Verkehrsportale der Bundesländer" ■■■■■
 $("#sidepanel-vmzde").append(spacer);
-$("#sidepanel-vmzde").append('<p style="font-size:90%">Koordinaten Erfassung auf WME SDK umgestellt bei Problemen bitte Feedback an pox_online</p>');
+$("#sidepanel-vmzde").append('<p style="font-size:80%">Script updatet auf WME SDK, danke an hahn112</p>');
 $("#sidepanel-vmzde").append('<p style="font-size:80%">Portale mit grüner Schrift unterstützen die Übergabe der Koordinaten aus dem WME</p>');
 $("#sidepanel-vmzde").append(spacer);
 $("#sidepanel-vmzde").append(bw_btn); // Verkehrsinfo BW - Mit Übergabe
