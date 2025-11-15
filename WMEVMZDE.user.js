@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Management Platforms in Germany, using the WME parameters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2025.08.06.06
+// @version 2025.11.15.01
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -10,12 +10,12 @@
 // @grant none
 // @author pox_online
 // ==/UserScript==
-
+// The script is based on Iridium1 L2DEGEO Script, so thanks him for the base of the source code!
 
 /* eslint-env jquery */
 /*global W*/
 
-const VMZDE_VERSION = "2025.08.06.06";
+const VMZDE_VERSION = "2025.11.15.01";
 
 // Konfiguration für Retry-Mechanismen
 const CONFIG = {
@@ -265,7 +265,7 @@ const PORTALS = {
         active: true,
         urlBuilder: (cz) => {
             const zoom = Math.min(Math.max(cz.zoom - 10, 1), 19);
-            return `https://verkehrsinfo-bw.de/?zoom=${zoom}&fullscreen=false&center=${cz.lat},${cz.lon}&layers=Beschriftung,Verkehrslage,Reisezeitverlust,Verkehrsmeldungen,Baustellen,Baustellenverläufe,Baustellenumleitungen,Verkehrskameras,Wechselwegweisung,Betriebsmeldungen`;
+            return `https://verkehrsinfo-bw.de/?zoom=${zoom}&fullscreen=false&center=${cz.lat},${cz.lon}&layers=Beschriftung,Verkehrslage,Reisezeitverlust,Verkehrsmeldungen,Baustellen%20und%20Ereignisse,Baustellenverläufe,Baustellenumleitungen,Verkehrskameras,Wechselwegweisung,Betriebsmeldungen`;
         }
     },
     by: {
