@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Management Platforms in Germany, using the WME parameters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2026.01.24.04
+// @version 2026.02.10.01
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -15,7 +15,7 @@
 /* eslint-env jquery */
 /*global W*/
 
-const VMZDE_VERSION = "2026.01.24.04";
+const VMZDE_VERSION = "2026.02.10.01";
 
 // Konfiguration für Retry-Mechanismen
 const CONFIG = {
@@ -461,7 +461,7 @@ async function addButtons() {
                 <div style="padding: 10px;">
                     <h3 style="margin: 0 0 10px 0; color: #333;">Verkehrsportale Deutschland</h3>
                     <p style="font-size: 12px; color: #666; margin: 0 0 15px 0;">
-                        Koordinaten werden automatisch aus dem WME übertragen.<br>
+                        Koordinaten werden automatisch aus dem WME übertragen. - Bitte beachtet die Rechteangaben der Portale ob Sperrungen ggf. übernommen werden dürfen oder nicht.<br>
                         Version: ${VMZDE_VERSION} | Feedback an pox_online
                     </p>
                     <div style="border-bottom: 1px solid #ddd; margin-bottom: 15px;"></div>
