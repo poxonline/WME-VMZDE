@@ -2,7 +2,7 @@
 // @name WME-VMZDE
 // @description This script create buttons to open several Traffic Management Platforms in Germany, using the WME parameters where supported.
 // @namespace https://github.com/poxonline/WME-VMZDE/blob/main/WMEVMZDE.user.js
-// @version 2026.02.10.01
+// @version 2026.07.08.01
 // @updateURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @downloadURL https://github.com/poxonline/WME-VMZDE/raw/main/WMEVMZDE.user.js
 // @include https://*.waze.com/editor*
@@ -15,7 +15,7 @@
 /* eslint-env jquery */
 /*global W*/
 
-const VMZDE_VERSION = "2026.02.10.01";
+const VMZDE_VERSION = "2026.07.08.01";
 
 // Konfiguration für Retry-Mechanismen
 const CONFIG = {
@@ -324,6 +324,11 @@ const PORTALS = {
         name: 'Verkehrsservice Hessen',
         active: false,
         urlBuilder: () => 'https://verkehrsservice.hessen.de/'
+    },
+    saha: {
+        name: 'LSBB Sachsen-Anhalt',
+        active: false,
+        urlBuilder: () => 'https://lsbb.sachsen-anhalt.de/service/baustellen-und-umleitungen'
     },
     ihk: {
         name: 'IHK-Baustellen-Portal',
